@@ -14,8 +14,7 @@ export async function POST(req: Request) {
   try {
     const { urls } = await req.json();
     const browser = await playwright.chromium.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      headless: true
     });
     
     const results = await Promise.all(
