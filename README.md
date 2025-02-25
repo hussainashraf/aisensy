@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Website Content Assistant
 
-## Getting Started
+An AI-powered web application that allows users to scrape content from websites and ask questions about the content using GPT-4. Built with Next.js, Playwright, and OpenAI's API.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Website content scraping using Playwright
+- Real-time chat interface with AI
+- Streaming responses from GPT-4
+- Support for multiple website URLs
+- Clean and responsive UI
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Before running this project, make sure you have:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js (v18 or higher)
+- OpenAI API key
+- Playwright browsers installed
 
-## Learn More
+## Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository:
+   ```bash
+   git clone <https://github.com/hussainashraf/aisensy.git>
+   cd <aisensy>
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Install Playwright browsers:
+   ```bash
+   npx playwright install chromium
+   ```
 
-## Deploy on Vercel
+4. Create a `.env` file in the root directory and add your OpenAI API key:
+   ```bash
+   OPEN_AI_KEY=your_openai_api_key_here
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+
+## How It Works
+
+### Website Scraping
+
+The application uses Playwright to scrape content from websites. Here's how it works:
+
+1. **Browser Automation**: Uses Playwright's headless Chrome browser to load web pages
+2. **Content Extraction**: 
+   - Loads the full page content
+   - Removes unnecessary elements (scripts, styles, navigation, etc.)
+   - Extracts clean text content using Cheerio
+3. **User Agent Rotation**: Implements random user agent selection to avoid blocking
+4. **Error Handling**: Gracefully handles failed scraping attempts
+
+Key components:
+- `app/api/scrape/route.ts`: Handles the scraping API endpoint
+- Playwright for browser automation
+- Cheerio for HTML parsing
+
+### LLM Integration
+
+The application uses OpenAI's GPT-4 model to analyze scraped content and answer user questions:
+
+1. **System Prompt**: Creates a context-aware system prompt containing:
+   - Scraped website content
+   - User information
+   - Strict instructions to only reference provided content
+
+2. **Streaming Responses**: 
+   - Implements streaming API responses
+   - Real-time message updates
+   - Chunked transfer encoding
+
+3. **Chat History**: 
+   - Maintains conversation context
+   - Allows for follow-up questions
+   - Preserves user and assistant messages
+
+Key components:
+- `utils/openai.ts`: OpenAI configuration and prompt generation
+- `app/api/chat/route.ts`: Handles chat API endpoint
+- Streaming response handling in frontend
+
+
